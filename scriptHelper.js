@@ -1,23 +1,20 @@
 // Write your helper functions here!
 require('isomorphic-fetch');
 
-let pilotInput = document.querySelector("input[name=pilotName]");
-let copilotInput = document.querySelector("input[name=copilotName]");
-let fuelInput = document.querySelector("input[name=fuelLevel]");
-let cargoInput = document.querySelector("input[name=cargoMass]");
-
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
-   document.missionTarget.innerHTML = 
-     `<h2>Mission Destination</h2>
-     <ol>
-       <li>Name: ${name}</li>
-       <li>Diameter: ${diameter}</li>
-       <li>Star: ${star}</li>
-       <li>Distance from Earth: ${distance}</li>
-       <li>Number of Moons: ${moons}</li>
-     </ol>
-     <img src=${imageUrl} alt="planet image"></img>`
-   ;
+   
+  let planetaryData = document.getElementById("missionTarget");
+  planetaryData.innerHTML =  
+    `<h2>Mission Destination</h2>
+    <ol>
+      <li>Name: ${name}</li>
+      <li>Diameter: ${diameter}</li>
+      <li>Star: ${star}</li>
+      <li>Distance from Earth: ${distance}</li>
+      <li>Number of Moons: ${moons}</li>
+    </ol>
+    <img src="${imageUrl}">`
+  ;
    
 }
 
@@ -52,41 +49,41 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
 
     if (fuelLevel < 10000 && cargoLevel > 10000) {
       launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-      launchStatus.style.color = rgb(225,0,0);
+      launchStatus.style.color = #C7254E; 
       fuelStatus.innerHTML = "Fuel level too low for launch";
       cargoStatus.innerHTML = "Cargo mass too high for launch";
     } else if (fuelLevel > 10000 && cargoLevel > 10000) {
       launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-      launchStatus.style.color = rgb(225,0,0);
+      launchStatus.style.color = #C7254E;
       cargoStatus.innerHTML = "Cargo mass too high for launch";
     } else if (fuelLevel < 10000 && cargoLevel < 10000) {
       launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-      launchStatus.style.color = rgb(225,0,0);
+      launchStatus.style.color = #C7254E;
       fuelStatus.innerHTML = "Fuel level too low for launch";
     } else {
       launchStatus.innerHTML = "Shuttle Ready for Launch";
-      launchStatus.style.color = rgb(0,225,0);
+      launchStatus.style.color = #419F6A;
     }
    }
 }
 
 async function myFetch() {
     
-  const fetchPromise = await fetch("https://handlers.education.launchcode.org/static/planets.json");
-  fetchPromise.then( function(response) {
-       const jsonPromise = response.json();
-       jsonPromise.then( function(json) {
-        console.log(json);
-       });
+  let planetsReturned;
+  planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
+      return response.json();
+  //  const jsonPromise = response.json();
+      //  jsonPromise.then( function(json) {
+      //   console.log(json);
+      //  });
      });
-
+return planetsReturned;
 }
 
 function pickPlanet(planets) {
-  let planetInfo = {};
+  let planetInfo;
   
-    planetInfo = planets[Math.round(Math.random() * 6)];
-  
+    planetInfo = planets[Math.round(Math.random() * planets.length)];
   return planetInfo;
 }
 
